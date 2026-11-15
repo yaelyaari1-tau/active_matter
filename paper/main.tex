@@ -1,0 +1,399 @@
+% Active Matter lab (Lab C) -- letter, single-column layout.
+% Compile on Overleaf (pdfLaTeX): pdflatex main && bibtex main && pdflatex main && pdflatex main
+% Requires references.bib and the three figure PDFs named below.
+% Red \todo{...} entries need experimental details or unfinished results.
+% Source-only CHECK comments identify analysis or figure changes still to make.
+% CHECK bibliography: retain the key Balda2022, but update its entry to:
+% Barona Balda et al., Playing with active matter, American Journal of Physics
+% 92, 847--858 (2024), doi:10.1119/5.0125111; alternatively identify the 2022 preprint explicitly.
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.2em}
+\bibliographystyle{unsrtnat}
+
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+\newcommand{\nn}{\hat{\mathbf n}}
+\newcommand{\rr}{\mathbf r}
+
+\title{Active Matter - Lab C}
+\author{Yael Yaari \and Netta Kaplan}
+\date{November 15, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Active particles use energy to sustain their motion.
+We test whether vibration-driven Hexbug robots reproduce selected behaviours of microscopic active matter.
+We measure the motion of a single robot and of passive objects placed in a bath of robots.
+The single robot moves nearly ballistically at short times and then follows curved paths with a drifting centre.
+We do not resolve a diffusive regime within the recording.
+Two gears with opposite tooth orientations rotate in opposite directions on average.
+An L-shaped rod has a mean squared displacement three to five times larger than that of a straight rod over lag times of $1$--$10\,$s.
+Its displacement is consistent with motion towards its outer corner, although drift in a fixed laboratory direction cannot be excluded.
+\todo{Add the measured number-fluctuation result once the collective analysis is complete.}
+These results support the use of Hexbugs to study persistent motion and geometric rectification at a macroscopic scale.
+\end{abstract}
+
+% ---------------------------------------------------------------- Introduction
+Active matter consists of units that use stored or externally supplied energy to drive their motion.
+Examples include swimming bacteria, self-propelled colloids and robots~\cite{Marchetti2013,Bechinger2016,VicsekZafeiris2012}.
+The continuous energy input keeps these systems out of thermal equilibrium.
+Particles that align with their neighbours can undergo a transition to collective motion~\cite{Vicsek1995}.
+They can also sustain long-range orientational order in two dimensions, unlike comparable equilibrium systems with continuous rotational symmetry and short-range interactions~\cite{TonerTu1995}.
+Other active-matter phenomena include unusually large number fluctuations~\cite{Narayan2007,Deseigne2010} and phase separation driven by self-propulsion and repulsive interactions~\cite{Buttinoni2013,CatesTailleur2015}.
+
+Persistent motion also affects how active particles interact with boundaries.
+Particles accumulate at walls~\cite{Bechinger2016}, and asymmetric boundaries can turn their motion into a net current, an effect known as rectification.
+For example, an array of funnels concentrates swimming bacteria on one side of a chamber~\cite{Galajda2007,Wan2008}.
+Asymmetric microscopic gears can rotate in a bacterial bath~\cite{Angelani2009,DiLeonardo2010,Sokolov2010}.
+A static asymmetric boundary cannot produce a sustained current from thermal equilibrium fluctuations alone.
+
+An unconfined, non-chiral active Brownian particle moves approximately ballistically while its heading persists, provided propulsion dominates translational noise.
+At times much longer than its orientational correlation time, its motion becomes diffusive~\cite{Howse2007,tenHagen2011}.
+A sustained turning bias instead produces curved or circular trajectories~\cite{Kummel2013}.
+Previous experiments show that centimetre-sized Hexbugs can reproduce both types of motion and can push or rotate passive objects~\cite{Balda2022}.
+Related vibrated robots also show an inertial delay between body orientation and velocity~\cite{Scholz2018}.
+
+Here we test which of these behaviours our Hexbug system reproduces.
+We first compare a single robot's motion with an active Brownian particle model that includes a mean turning rate and drift.
+We then examine how the shape of a passive object affects its motion in a bath of robots.
+Finally, we examine number fluctuations as the number of robots increases.
+These measurements test selected active-particle descriptions; they do not assume that dry robots reproduce all the dynamics of microscopic particles suspended in a fluid.
+
+% ---------------------------------------------------------------- Experimental setup
+The Hexbugs are approximately $5\,$cm long.
+A vibrating motor and curved rubber legs propel each robot forward.
+The robots move in flat arenas and are filmed from above at 30 frames/s.
+\todo{Give the arena shapes, dimensions and surface material; the robot model and any covers or added loads; the camera height and calibration in the arena plane.}
+The single-particle tracking uses a circular Hough transform.
+\todo{Identify the circular feature being tracked and explain how its position represents the robot's position.}
+Painted markers on the gears and rods are located by colour thresholding.
+Frames in which a hand is visible are excluded.
+\todo{State the total and usable duration of each run, the number of independent runs, and how missing detections, wall contacts and hand interventions are handled.}
+Lengths are reported in pixels (px).
+\todo{Convert lengths, speeds, areas, MSDs and diffusion coefficients to physical units once the spatial calibration is available.}
+% CHECK tracking: preserve timestamps and do not join trajectories across interventions.
+% Confirm that every lagged pair lies within one uninterrupted valid stretch.
+% Explain smoothing, marker-to-centre reconstruction and angular unwrapping.
+% Distinguish a geometric centre or marker position from a true centre of mass.
+
+% ---------------------------------------------------------------- Single particle: model
+We model the single robot as an overdamped active particle on the timescales analysed.
+Its propulsion force $F_0\nn$ and an external force $\mathbf F^\mathrm{ext}$ are balanced by an effective friction force, $\beta\dot\rr=F_0\nn+\mathbf F^\mathrm{ext}$~\cite{Balda2022}.
+Here $\nn=(\cos\theta,\sin\theta)$ is the propulsion direction and $\beta$ is an effective friction coefficient.
+For a constant external force,
+\begin{equation}
+  \dot{\rr}=v_0\nn+\mathbf V,
+  \label{eq:r}
+\end{equation}
+where $v_0=F_0/\beta$ and $\mathbf V=\mathbf F^\mathrm{ext}/\beta$.
+We use the constant drift $\mathbf V$ phenomenologically; its physical origin is not measured.
+We represent irregular changes in heading by rotational diffusion and allow a mean turning rate $\Omega$~\cite{Kummel2013,Balda2022}:
+\begin{equation}
+  \dot{\theta}=\Omega+\sqrt{2D_\theta}\,\eta(t).
+  \label{eq:th}
+\end{equation}
+The Gaussian white noise has zero mean and satisfies $\langle\eta(t)\eta(t')\rangle=\delta(t-t')$.
+The model neglects translational noise and changes in propulsion speed.
+% CHECK model: assess whether inertial relaxation is short compared with the fitted lags.
+
+For $\Omega=0$ and $\mathbf V=0$, the heading correlation is $\langle\nn(t)\cdot\nn(0)\rangle=e^{-D_\theta t}$.
+The mean squared displacement (MSD) is approximately $v_0^2t^2$ for $t\ll1/D_\theta$ and $2v_0^2t/D_\theta$ for $t\gg1/D_\theta$.
+The corresponding persistence length is $v_0/D_\theta$.
+With a turning bias, the heading correlation becomes $e^{-D_\theta t}\cos(\Omega t)$.
+For constant model parameters and uniformly sampled initial headings, the MSD is
+\begin{equation}
+  \langle|\Delta\rr(t)|^2\rangle
+  =2v_0^2\,\mathrm{Re}\!\left[\frac{t}{z}-\frac{1-e^{-zt}}{z^2}\right]+V^2t^2,
+  \qquad z=D_\theta-i\Omega,
+  \label{eq:msd}
+\end{equation}
+where $V=|\mathbf V|$.
+The initial-heading average removes the cross term between propulsion and drift.
+A short time average need not sample headings uniformly.
+
+When $|\Omega|\gg D_\theta$, the approximate orbit radius is $R=v_0/|\Omega|$.
+In the limit of zero noise and drift, the MSD is $2R^2[1-\cos(\Omega t)]$.
+Its departure from ballistic growth is gradual and occurs on a timescale set by $1/|\Omega|$.
+Following Ref.~\cite{Balda2022}, we also define $L=v_0/\sqrt{D_\theta^2+\Omega^2}$ as the magnitude of the long-time mean displacement relative to a fixed initial heading, after removing drift.
+For a strongly chiral particle, $L\simeq R$; this length is distinct from the distance $v_0/D_\theta$ travelled during the rotational-noise correlation time.
+For $D_\theta>0$, Eq.~\eqref{eq:msd} has the long-time form
+\[
+  \langle|\Delta\rr(t)|^2\rangle
+  = V^2t^2+4D_\mathrm{active}t+O(1),
+  \qquad D_\mathrm{active}=\frac{v_0^2D_\theta}{2(D_\theta^2+\Omega^2)}.
+\]
+Thus a constant drift can mask diffusion in the raw MSD.
+
+We estimate the MSD by averaging $|\rr(t_0+t)-\rr(t_0)|^2$ over starting times $t_0$ at each lag $t$.
+To estimate the direction of motion, we normalise the displacement over $0.33\,$s to obtain a unit vector $\mathbf m$.
+We calculate $C(t)=\langle\mathbf m(t_0)\cdot\mathbf m(t_0+t)\rangle_{t_0}$ and fit
+\begin{equation}
+  C(t)=a_0+a_1\cos(\Omega t)e^{-\Gamma t}.
+  \label{eq:corr}
+\end{equation}
+Here $a_0$, $a_1$ and $\Gamma$ are fit parameters.
+The measured displacement direction need not equal the propulsion direction when drift is present.
+The finite displacement interval also affects the correlation, so $\Gamma$ cannot automatically be identified with $D_\theta$.
+% CHECK correlation: test drift subtraction and displacement interval, or measure body heading.
+% A model comparison should apply the same direction estimator to model trajectories.
+% CHECK fits: specify weights, objective, constraints, slope errors and the meaning of each uncertainty.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig1_single.pdf}
+  \caption{A single Hexbug shows nearly ballistic motion at short lags and coherent turning. No diffusive regime is resolved within the analysed lag range. (a)~Trajectory, coloured by time. (b)~MSD (points), with reference power laws $t^{1.84}$ over $0.1$--$2.6\,$s and $t^{1.39}$ over $10$--$52\,$s. The orange curve is Eq.~\eqref{eq:msd} fitted over $0.13$--$52\,$s, with an additive constant representing localisation error: $\Omega=0.637\pm0.010\,\mathrm{s^{-1}}$, $v_0=68\,$px/s, $V=15.0\pm0.3\,$px/s and $D_\theta=0.092\pm0.009\,\mathrm{s^{-1}}$. (c)~Displacement-direction correlation (blue) and the damped-cosine fit, Eq.~\eqref{eq:corr} (orange), fitted over $0.4$--$20\,$s and shown at larger lags for comparison: $\Omega=0.623\,\mathrm{s^{-1}}$, $\Gamma=0.0057\pm0.0006\,\mathrm{s^{-1}}$ and $R^2=0.994$.}
+  \label{fig:single}
+\end{figure}
+% CHECK Figure 1: identify whether the power laws are fitted slopes or guides to the eye.
+% Add uncertainties, mark fitted ranges, use equal spatial axis scales and show arena bounds.
+
+% ---------------------------------------------------------------- Single particle: results
+Figure~\ref{fig:single}a shows loops whose centre drifts across the arena.
+The displacement-direction correlation oscillates with a period of $10.1\,$s, corresponding to $\Omega=0.623\,\mathrm{s^{-1}}$.
+The fitted decay rate is $\Gamma=0.0057\pm0.0006\,\mathrm{s^{-1}}$.
+The fit therefore indicates slow decay, but its characteristic time, $1/\Gamma\approx175\,$s, exceeds both the $20\,$s upper fit lag and the $60\,$s recording duration.
+
+The MSD grows approximately as $t^{1.84}$ up to $2.6\,$s.
+This timescale is close to a quarter turning period, $\pi/(2|\Omega|)\approx2.5\,$s, which suggests that systematic turning causes the departure from nearly ballistic motion.
+The MSD then flattens near $5\times10^4\,\mathrm{px^2}$ and has a dip near one turning period, at $t\approx10\,$s.
+At larger lags, a power-law fit over $10$--$52\,$s gives an effective exponent of $1.39$.
+This describes the measured interval and does not establish an asymptotic superdiffusive regime.
+
+Fitting Eq.~\eqref{eq:msd}, with an additive localisation-error offset, over $0.13$--$52\,$s gives $\Omega=0.637\pm0.010\,\mathrm{s^{-1}}$, within about $2\%$ of the value from the correlation.
+The fitted speed is $v_0=68\,$px/s, giving $R\simeq L\simeq106\,$px.
+The drift speed is $V=15.0\pm0.3\,$px/s.
+An estimate of the orbit centre, obtained by averaging the position over one turning period, moves at $16.0\,$px/s.
+This provides a consistency check using the same trajectory.
+\todo{Define the MSD fit residual metric and its log base before reporting the previously quoted $7\%$ fit deviation; state how the parameter uncertainties were obtained.}
+A second recording shows the same qualitative sequence: a short-lag exponent of $1.81$ over $0.3$--$3\,$s, a flatter region, and an exponent of $1.57$ over $12$--$50\,$s.
+Its fitted turning rate is $\Omega=0.53\,\mathrm{s^{-1}}$, with a smaller correlation amplitude $a_1=0.11$ and a faster decay rate $\Gamma=0.073\,\mathrm{s^{-1}}$.
+
+The model does not give a consistent estimate of rotational noise across the two observables.
+The MSD fit gives $D_\theta=0.092\pm0.009\,\mathrm{s^{-1}}$, about sixteen times the correlation decay rate.
+The shrinking loops suggest that the speed, turning rate or both vary during the recording.
+Such variation, together with drift and the difference between heading and displacement direction, could contribute to the discrepancy.
+We therefore treat the MSD value of $D_\theta$ as an effective fit parameter rather than a bound on rotational noise.
+Long lags are also weakly sampled: a lag of $52\,$s in a $60\,$s recording leaves only $8\,$s of overlapping start times.
+% CHECK robustness: refit with shorter lag cutoffs, vary the correlation fit interval,
+% inspect time-dependent speed and turning rate, and account for overlapping increments.
+
+The origin of the fitted drift is unresolved.
+If it were caused by a constant external force with the same effective friction coefficient, Eq.~\eqref{eq:r} would give $|\mathbf F^\mathrm{ext}|/F_0=V/v_0\approx0.2$.
+A slight table tilt is one possible cause, but it has not been tested.
+% CHECK whether drift directions agree across recordings; a shared direction would support,
+% but would not establish, a laboratory-fixed cause. A non-uniform surface need not give constant drift.
+
+% ---------------------------------------------------------------- Passive objects: contact model
+To interpret the motion of passive objects, we consider how robots respond to contact.
+Previous work on Hexbugs describes a self-alignment torque that turns the propulsion direction towards the velocity~\cite{Dauchot2019,Baconnier2022}:
+\begin{equation}
+  \dot\nn\big|_\mathrm{align}=\kappa(\nn\times\dot\rr)\times\nn,
+  \label{eq:align}
+\end{equation}
+with $\kappa>0$.
+This term acts in addition to the turning bias and noise in Eq.~\eqref{eq:th}.
+For motion imposed along a fixed direction, small angular deviations relax over an alignment length $\ell_a=1/\kappa$~\cite{Baconnier2022}.
+We use this model to interpret contact qualitatively, without assigning a value to $\kappa$.
+
+At a fixed flat wall, contact can suppress normal motion while allowing the robot to slide along the wall.
+Self-alignment can then turn its heading towards the sliding direction.
+In a fixed concave corner, translational motion may be blocked and the velocity-dependent alignment term becomes small.
+The robot can continue pushing until reorientation or changes in contact allow it to escape.
+Intrinsic turning, noise and contact torques can still affect its orientation.
+For a moving gear or rod, a trapped robot can move with the object, so this fixed-wall argument does not determine the contact dynamics quantitatively.
+
+Self-alignment also limits the interpretation of the free-robot model.
+Combining Eqs.~\eqref{eq:r} and~\eqref{eq:align} adds an angular term $\kappa\nn_\perp\cdot\mathbf V$, where $\nn_\perp=(-\sin\theta,\cos\theta)$.
+Equations~\eqref{eq:r}--\eqref{eq:msd} neglect this coupling and should therefore be read as a phenomenological description of the free trajectory.
+
+Longer contacts on one side of an asymmetric object can produce a mean force or torque.
+This provides a possible mechanism for rectification by concave corners.
+For a saw-toothed gear, the tooth orientation can select the direction of the mean torque, as demonstrated in bacterial baths~\cite{Angelani2009,DiLeonardo2010} and Hexbug experiments~\cite{Balda2022}.
+Testing this mechanism in our system would require measuring contact durations as well as object motion.
+
+% ---------------------------------------------------------------- Gears
+We placed two gears with opposite tooth orientations in a bath of 17 robots (Fig.~\ref{fig:spinner}a,b).
+\todo{State whether each gear was free or pivoted, and give its dimensions, material and mass.}
+We tracked the angle $\vartheta(t)$ of the line joining two painted markers.
+A linear fit to $\vartheta(t)$ in each $8\,$s window gives the angular velocity $\omega$, defined as positive for counter-clockwise rotation.
+% CHECK angle unwrapping and the sign conversion from image coordinates to this convention.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig2_spinner.pdf}
+  \caption{Gears with opposite tooth orientations show opposite net rotation. (a,b)~The gears and their measured directions of rotation. (c)~Angular velocities in $8\,$s windows (dots), with the mean and standard deviation across windows. (d)~Accumulated rotation in turns, with final values marked at the right. Both recordings use a bath of 17 robots and are analysed over $104\,$s, giving 13 windows per gear. This duration is set by the gear-A recording, which ends when the gear was moved by hand. The windows describe variability within a recording, not independent experimental repeats.}
+  \label{fig:spinner}
+\end{figure}
+% CHECK Figure 2: add physical scale bars and identify whether the gears were pivoted.
+
+Gear~A rotates clockwise in 12 of 13 windows, and gear~B rotates counter-clockwise in all 13.
+Their mean angular velocities are $-24\pm21\,^\circ$/s and $+31\pm10\,^\circ$/s, respectively, where the uncertainties are standard deviations across windows.
+Over $104\,$s, gear~A completes $7.0$ clockwise turns and gear~B completes $8.6$ counter-clockwise turns.
+These speeds are of the same order as the magnitudes $0.7$ and $1.1\,$rad/s reported for free gears in a bath of 14 Hexbugs~\cite{Balda2022}, although the setups need not have the same friction or contact statistics.
+
+The rotation rate varies during each recording.
+Gear~A shows a pronounced pause followed by renewed rotation (Fig.~\ref{fig:spinner}d).
+Intermittent pushing by robots in the teeth is a possible explanation, but the rotation data alone do not establish the contact durations.
+The opposite net rotations are consistent with rectification by tooth geometry.
+Because we used one gear of each handedness, other differences between the objects cannot be excluded.
+We also have not established whether the robot bath has a common turning bias.
+Repeated trials and a symmetric-gear control would help separate these effects.
+
+% ---------------------------------------------------------------- Rods: model and methods
+We also compared the translation of a straight rod and an L-shaped rod in a bath of 17 robots.
+In a homogeneous, isotropic bath without directional bias, the symmetry of a straight rod does not select a mean propulsion direction.
+It does not, by itself, require a linear MSD: correlated pushes can produce persistent motion with zero mean displacement.
+Shape-dependent tracer dynamics also occur in one-dimensional active-bath models~\cite{Granek2022}, but their long-time results do not establish the behaviour of our two-dimensional rods.
+An ideal L-shaped rod with equal arms has a mirror axis along the bisector of its arms.
+Symmetry allows a mean force along this axis.
+Robots pushing in the concave corner could drive it towards its outer corner, as observed for a wedge in a previous Hexbug experiment~\cite{Balda2022}.
+% CHECK that the actual L-shaped object's arm lengths and mass distribution justify this mirror symmetry.
+
+To test this description, we model the L-shaped rod as a tracer with an effective propulsion speed $U$ and random translational forcing:
+\[
+  \dot{\mathbf R}=-U\hat{\mathbf e}_b+\sqrt{2D_t}\,\boldsymbol\xi(t).
+\]
+Here $\mathbf R$ is the tracked rod position, and $\hat{\mathbf e}_b$ points along the arm bisector from the corner towards the opening.
+The vector noise has zero mean and correlations $\langle\xi_i(t)\xi_j(t')\rangle=\delta_{ij}\delta(t-t')$.
+We approximate the random forcing as isotropic and the orientation as rotational diffusion with coefficient $D_\mathrm{rot}$.
+The scalar $D_t$ is therefore an effective translational diffusion coefficient.
+The model's MSD is Eq.~\eqref{eq:msd} with $v_0\to U$, $D_\theta\to D_\mathrm{rot}$ and $\Omega=V=0$, plus $4D_tt$.
+For the straight rod, the diffusive model sets $U=0$ and gives an MSD of $4D_tt$.
+
+The same model predicts the mean displacement along the rod axis at the start of a lag:
+\begin{equation}
+  \Delta_\parallel(t)\equiv
+  \big\langle[\mathbf R(t_0+t)-\mathbf R(t_0)]\cdot\hat{\mathbf e}_b(t_0)\big\rangle_{t_0}
+  =-\frac{U}{D_\mathrm{rot}}\left(1-e^{-D_\mathrm{rot}t}\right).
+  \label{eq:dpar}
+\end{equation}
+It predicts zero ensemble mean perpendicular displacement, $\Delta_\perp(t)=0$.
+For the straight-rod model, both mean components vanish.
+These are ensemble predictions; finite recordings can give nonzero estimates.
+
+The rods have the same projected area, $11.3\times10^3\,\mathrm{px^2}$.
+Equal area does not ensure equal friction or contact statistics.
+We track $\mathbf R$ and $\hat{\mathbf e}_b$ and average over starting times in stretches without hand interventions.
+For the straight rod, $\hat{\mathbf e}_b$ lies along its long axis.
+\todo{Define how markers determine the tracked centre and rod orientation, and how the sign of the straight rod's axis is maintained across frames. Give rod dimensions, material and mass.}
+We estimate $D_\mathrm{rot}$ from the rod's orientation correlation, then fit $U$ and $D_t$ to the MSD over $1$--$20\,$s.
+We use these estimates in Eq.~\eqref{eq:dpar} without further fitting.
+This compares two observables from the same trajectory and is a consistency check rather than an independent validation.
+The reported uncertainties use a bootstrap over $10\,$s blocks of starting times.
+% CHECK uncertainty: increments up to 20 s can share data across adjacent 10 s blocks.
+% Test block-length sensitivity; propagate D_rot uncertainty through the entire fitting pipeline.
+% Report the orientation-correlation fit range and whether a polar or nematic correlation was used.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig3_rods.pdf}
+  \caption{The L-shaped rod has a larger MSD than the straight rod. (a,b)~The rods and the axes $\hat{\mathbf e}_b$ used in the analysis. (c)~MSDs of the tracked centres (points) and the effective tracer models (black lines), fitted over $1$--$20\,$s with $D_\mathrm{rot}$ fixed by the orientation-correlation estimate. The straight-rod curve uses $U=0$. The shaded region marks lags below approximately $1\,$s, where the model does not describe the observed motion. (d)~Mean displacement along (filled symbols) and perpendicular to (open symbols) the initial rod axis; orange: L-shaped rod, blue: straight rod. Black lines show Eq.~\eqref{eq:dpar} with $U$ from (c) and the zero-mean prediction. The grey band propagates $\pm1$ standard error in $U$ with $D_\mathrm{rot}$ held fixed; coloured bands show $\pm1$ bootstrap standard error. The L-shaped rod's displacement is consistent with corner-first motion, but drift in a fixed laboratory direction remains a possible explanation.}
+  \label{fig:rods}
+\end{figure}
+% CHECK Figure 3 artwork: replace "U = 0 (symmetry)" with "diffusive fit, U = 0".
+% Relabel the tracked position if it is not a verified centre of mass.
+% Mark the fit range and model extrapolations; revise bands if uncertainty propagation changes.
+
+% ---------------------------------------------------------------- Rods: results
+The straight rod's MSD is consistent with diffusion over $1$--$20\,$s, with an effective exponent of $0.91\pm0.17$ and $D_t=68\pm11\,\mathrm{px^2/s}$.
+Allowing propulsion in the fit gives $U=0$.
+The L-shaped rod's MSD is three to five times larger over $1$--$10\,$s.
+Its fit gives $D_t=239\pm67\,\mathrm{px^2/s}$ and $U=5.8\pm3.4\,$px/s.
+The estimated rotational time is $1/D_\mathrm{rot}\approx160\,$s, longer than the fitted lags.
+Over this range, the model's propulsion contribution is approximately $U^2t^2$.
+However, the reported uncertainty in $U$ is large, so the fit provides limited evidence for nonzero propulsion.
+% CHECK U: the MSD depends on U squared. Use a confidence interval appropriate to U >= 0.
+% Confirm the straight-rod alternative fit and propagate all parameter uncertainties.
+
+Different contact durations could contribute to the difference between the rods' MSDs.
+A robot can slide along a straight face, whereas a concave corner may hold it in contact for longer~\cite{Balda2022}.
+The MSD difference alone does not isolate this mechanism.
+Below approximately $1\,$s, both rods depart from the model with temporally uncorrelated forcing.
+Finite-duration pushes are a possible cause; their duration has not been established by the MSD measurement.
+
+At a lag of $10\,$s, the straight rod has mean displacements $\Delta_\parallel=+4\pm9\,$px and $\Delta_\perp=-19\pm14\,$px.
+Neither estimate provides clear evidence of a nonzero ensemble mean.
+For the L-shaped rod, Eq.~\eqref{eq:dpar} predicts $\Delta_\parallel(10\,\mathrm s)=-56\pm34\,$px, compared with the measured $-51\pm27\,$px.
+The measured perpendicular component is $-26\pm14\,$px.
+Its nonzero estimate is not, by itself, a statistically established violation of the zero-mean prediction.
+
+The L-shaped rod samples a limited range of orientations during the $90\,$s of usable data.
+Its body frame is therefore nearly fixed relative to the laboratory.
+A laboratory-fixed drift, for example from table tilt or uneven robot density, could contribute to the MSD and to both displacement components.
+The parallel displacement is consistent with corner-first propulsion, but does not distinguish it from such a drift.
+Recordings spanning many rod orientations would provide a stronger test.
+
+% ---------------------------------------------------------------- Collective behaviour: model and methods
+The final experiment examines how the robots organise as their number increases.
+In the Vicsek model, particles align with their neighbours, and increasing density or reducing angular noise can produce coherent collective motion~\cite{Vicsek1995}.
+Hexbugs have no programmed alignment rule, but contact and self-alignment can couple their directions of motion~\cite{Dauchot2019}.
+Dense groups at a wall, however, need not be moving flocks.
+Number fluctuations measure spatial organisation; a claim of flocking also requires evidence of directional order.
+
+For the number-fluctuation analysis, we divide the arena into square boxes of side $\ell$ and count the robot centres $N_\mathrm{b}$ in each box.
+We examine the variance-to-mean ratio, or Fano factor,
+\begin{equation}
+  F(\ell)=\frac{\operatorname{Var}(N_\mathrm{b})}{\langle N_\mathrm{b}\rangle}
+  =\frac{\langle N_\mathrm{b}^2\rangle-\langle N_\mathrm{b}\rangle^2}{\langle N_\mathrm{b}\rangle},
+  \label{eq:nf}
+\end{equation}
+as a function of the mean occupancy.
+For $N$ independent particles, each with probability $p$ of occupying a specified box, the count is binomial:
+\[
+  \langle N_\mathrm{b}\rangle=Np,
+  \qquad F_\mathrm{independent}=1-p=1-\frac{\langle N_\mathrm{b}\rangle}{N}.
+\]
+For a uniform density, $p$ is the fraction of accessible arena area within the box.
+The Poisson reference $F\simeq1$ applies only when $p\ll1$.
+The fixed total particle number makes $F$ vanish when the box covers the entire arena.
+
+An excess over the independent-particle reference can indicate correlations, but pooling boxes with different mean densities can also increase the measured variance.
+This is relevant when robots accumulate at the wall.
+The averaging procedure and reference model must therefore distinguish temporal fluctuations from a stationary density profile.
+Under the restrictive model of independently distributed groups counted whole, $F\simeq\langle s^2\rangle/\langle s\rangle$, where $s$ is group size.
+Without these assumptions, a plateau in $F$ cannot be interpreted directly as a mean cluster size.
+Giant number fluctuations instead refer to anomalous scaling of the standard deviation, $\sqrt{\operatorname{Var}(N_\mathrm{b})}\propto\langle N_\mathrm{b}\rangle^\alpha$ with $\alpha>1/2$, over a suitable range of box sizes~\cite{Narayan2007,Deseigne2010}.
+Enhanced fluctuations alone do not establish this scaling or polar flocking.
+
+\todo{Complete the methods: arena diameter and recording duration for each $N$; centre detection and occlusion handling; box sizes and treatment of partial boxes; time versus box averaging; frame sampling and the relevant correlation time; uncertainty estimation.}
+% CHECK collective analysis: use an independent-particle reference with fixed N and the
+% measured spatial density where needed. Do not presume that an 8 s block exceeds the
+% density-correlation time. Assess finite-size and wall effects before fitting a scaling exponent.
+
+% ---------------------------------------------------------------- Collective behaviour: pending results
+\begin{figure}[t]
+  \centering
+  \fbox{\parbox[c][5.5cm][c]{0.9\textwidth}{\centering
+    \todo{Figure 4. (a) Snapshots for $N=5,7,10,15,20$, with the arena wall visible. (b) Fano factor versus mean occupancy, with each $N$ curve identified and the appropriate finite-$N$ reference shown. (c) If supported by the analysis, plateau Fano factor versus $N$. Do not label it cluster size without validating the group model.}
+  }}
+  \caption{\todo{Describe the measured clustering and number fluctuations, define every panel and specify the box sizes and uncertainties.}}
+  \label{fig:flock}
+\end{figure}
+
+\todo{Write the results after completing the analysis. Describe the observed spatial organisation and departures from the appropriate independent-particle reference. Report any plateau or scaling range with its uncertainty. Distinguish clustering, wall accumulation and directional order; do not infer flocking from number fluctuations alone.}
+
+% ---------------------------------------------------------------- Discussion and conclusion
+The Hexbug system reproduces selected features of active matter at a macroscopic scale.
+A single robot shows persistent, chiral motion, and the two gears show opposite net rotation.
+The gear result is consistent with geometric rectification observed in microscopic bacterial baths~\cite{DiLeonardo2010,Sokolov2010}.
+The rods have different MSDs, and the L-shaped rod's displacement is consistent with corner-first motion, although drift remains an alternative explanation.
+\todo{Add the collective finding and state what it establishes about the active-matter analogy.}
+
+The comparison has clear limits.
+The single robot does not show a resolved diffusive regime within the recording, and the fitted rotational decay rates differ between observables.
+Neither the origin of its drift nor the contact mechanism driving the objects has been established quantitatively.
+The robots are driven on a solid surface, so the experiment does not test the fluid-mediated interactions or thermal noise of microscopic suspensions.
+Within this scope, the measurements support Hexbugs as a model for persistent motion and geometric rectification.
+Longer trajectories, better sampling of rod orientations and repeated object trials would allow more stringent tests.
+
+\bibliography{references}
+\end{document}
