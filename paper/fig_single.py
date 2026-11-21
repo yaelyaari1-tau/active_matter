@@ -1,6 +1,6 @@
 """Figure 1 of the letter: a single chiral Hexbug (stage 1).
 
-(a) trajectory, (b) MSD with assisting lines and the chiral-ABP curve, (c) velocity-direction correlation.
+(a) direction correlation with the Eq.-(4) fit, (b) MSD with assisting lines.
 Uses the notebook's own functions (stage1_unified_v2.ipynb) so the numbers are the ones of the stage-1 analysis.
 Needs paper/cache/<video>.npz from track_stage1.py.     Usage: python paper/fig_single.py [video-stem]
 """
@@ -13,10 +13,10 @@ import numpy as np
 from scipy.optimize import curve_fit
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-name = sys.argv[1] if len(sys.argv) > 1 else "2026-11-01_12-04-11"
+name = sys.argv[1] if len(sys.argv) > 1 else "2026-11-01_11-54-10"
 
 # ---- reuse the notebook's functions: execute only imports, constants and function definitions
-nb = json.load(open(os.path.join(ROOT, "stage1_unified_v2.ipynb")))
+nb = json.load(open(os.path.join(ROOT, "stage1_code", "stage1_unified_v2.ipynb")))
 ns = {"__name__": "nb"}
 for i in (1, 10, 15, 18):
     src = "\n".join(l for l in "".join(nb["cells"][i]["source"]).splitlines() if not l.lstrip().startswith("%"))
@@ -35,14 +35,29 @@ lag, msd = ns["calculate_msd"](t, xy)
 clag, C = ns["calculate_direction_correlation"](t, xy)
 
 # power-law guides (same ranges as the stage-1 analysis)
-R1, R3 = (0.1, 2.6), (10, 52)
+R1, R3 = (0.2, 1.5), (9.0, 40.0)   # fit ranges of the selected stage-1 plots
 a1, b1, s1 = ns["fit_power_law"](lag, msd, R1)
 a3, b3, s3 = ns["fit_power_law"](lag, msd, R3)
 # damped cosine for the direction correlation (notebook fit window 0.4-20 s)
 p, perr, r2, sel = ns["fit_direction_correlation"](clag, C)
 a0, A1, Om, Gam = p
+# Eq. (4) of the letter: C(t) = exp(-Dr t) cos(Omega t), fitted over 0.4-20 s
+eq4 = lambda x, Dr, W: np.exp(-Dr * x) * np.cos(W * x)
+mw = (clag >= 0.4) & (clag <= 20)
+bestc = None
+for w0 in (0.4, 0.7, 1.0, 1.4):
+    try:
+        qc, qcc = curve_fit(eq4, clag[mw], C[mw], p0=[0.05, w0])
+    except (RuntimeError, ValueError):
+        continue
+    rr = np.sum((C[mw] - eq4(clag[mw], *qc)) ** 2)
+    if bestc is None or rr < bestc[0]:
+        bestc = (rr, qc, qcc)
+Dr4, Om4 = bestc[1][0], abs(bestc[1][1])
+R2_4 = 1 - bestc[0] / np.sum((C[mw] - C[mw].mean()) ** 2)
+print(f"Eq.(4) fit 0.4-20 s: Omega = {Om4:.3f} rad/s, T = {2*np.pi/Om4:.2f} s, Dr = {Dr4:.4f} 1/s, 1/Dr = {1/Dr4:.1f} s, R2 = {R2_4:.3f}; errors {np.sqrt(np.diag(bestc[2]))}")
 # chiral ABP + constant drift of the orbit centre, fitted to the whole MSD
-MSD_FIT = (0.13, 52.0)
+MSD_FIT = (0.13, 52.0)  # model fit is reported in the text only; not drawn
 m = (lag >= MSD_FIT[0]) & (lag <= MSD_FIT[1])
 model = lambda tt, lv2, om, g, V, c: ns["chiral_msd"](tt, np.exp(lv2), om, g, c) + V ** 2 * tt ** 2
 best = None
@@ -78,37 +93,30 @@ print(f"chiral ABP + drift fitted to MSD {MSD_FIT} s: v0 = {v0:.1f} px/s, Omega 
 BLUE, ORANGE, INK, MUTED = "#0072B2", "#D55E00", "#222222", "#666666"
 plt.rcParams.update({"font.size": 8, "axes.edgecolor": MUTED, "axes.labelcolor": INK, "xtick.color": MUTED,
                      "ytick.color": MUTED, "text.color": INK, "axes.spines.top": False, "axes.spines.right": False})
-fig, axs = plt.subplots(1, 3, figsize=(7.0, 2.45), gridspec_kw=dict(width_ratios=[0.85, 1, 1], wspace=0.55))
+fig, axs = plt.subplots(1, 2, figsize=(7.0, 2.45), gridspec_kw=dict(wspace=0.4))
 
 ax = axs[0]
-ok = np.isfinite(xy).all(axis=1)
-sc = ax.scatter(xy[ok, 0], xy[ok, 1], c=t[ok], s=1.2, cmap="viridis", rasterized=True)
-ax.set_aspect("equal"); ax.invert_yaxis()
-ax.set_xlabel("$x$ (px)"); ax.set_ylabel("$y$ (px)")
-cb = fig.colorbar(sc, ax=ax, orientation="horizontal", fraction=0.045, pad=0.28); cb.set_label("$t$ (s)", fontsize=7); cb.ax.tick_params(labelsize=6)
-ax.text(-0.28, 1.02, "(a)", transform=ax.transAxes, fontweight="bold")
+ax.plot(clag, C, color=BLUE, lw=0.8)
+xs = np.linspace(0.4, 100, 1000)
+ax.plot(xs, eq4(xs, Dr4, Om4), color=ORANGE, lw=1.0, ls=":")
+xf = np.linspace(0.4, 20, 300)
+ax.plot(xf, eq4(xf, Dr4, Om4), color=ORANGE, lw=1.4)
+ax.axhline(0, color=MUTED, lw=0.6)
+ax.set_xlim(0, 100); ax.set_ylim(-1, 1)
+ax.set_xlabel("lag time $t$ (s)"); ax.set_ylabel(r"direction correlation $C(t)$")
+ax.text(0.97, 0.06, r"$e^{-D_r t}\cos(\Omega t)$", color=ORANGE, transform=ax.transAxes, ha="right", fontsize=7)
+ax.text(-0.34, 1.02, "(a)", transform=ax.transAxes, fontweight="bold")
 
 ax = axs[1]
 ax.loglog(lag, msd, "o", ms=2.5, color=BLUE, mec="none")
-tt = np.logspace(np.log10(MSD_FIT[0]), np.log10(MSD_FIT[1]), 200)
-ax.loglog(tt, model(tt, *q), "-", color=ORANGE, lw=1.2)
+ax.axvspan(2.0, 9.0, color="#9467bd", alpha=0.08, lw=0)
+ax.axvline(5.5, color="#9467bd", lw=0.8, ls=":")
 for (alpha, b, s_, off, lab) in ((a1, b1, s1, 0.35, f"$\\propto t^{{{a1:.2f}}}$"), (a3, b3, s3, 0.35, f"$\\propto t^{{{a3:.2f}}}$")):
     xx = np.logspace(np.log10(lag[s_][0]), np.log10(lag[s_][-1]), 20)
     ax.loglog(xx, off * 10 ** b * xx ** alpha, "--", color=INK, lw=0.9)
     ax.text(np.sqrt(xx[0] * xx[-1]), off * 10 ** b * np.sqrt(xx[0] * xx[-1]) ** alpha * 0.45, lab, ha="center", va="top", fontsize=7)
 ax.set_xlabel("lag time $t$ (s)"); ax.set_ylabel(r"MSD (px$^2$)")
-ax.text(0.97, 0.06, "chiral ABP + drift, Eq. (3)", color=ORANGE, transform=ax.transAxes, fontsize=7, ha="right")
 ax.text(-0.34, 1.02, "(b)", transform=ax.transAxes, fontweight="bold")
-
-ax = axs[2]
-ax.plot(clag, C, color=BLUE, lw=0.8)
-xs = np.linspace(0.4, 60, 600)
-ax.plot(xs, ns["corr_model"](xs, *p), color=ORANGE, lw=1.1, ls=(0, (3, 2)))
-ax.axhline(0, color=MUTED, lw=0.6)
-ax.set_xlim(0, 62); ax.set_ylim(-1, 1)
-ax.set_xlabel("lag time $t$ (s)"); ax.set_ylabel(r"direction correlation $C(t)$")
-ax.text(0.97, 0.06, r"$\propto\cos(\Omega t)\,e^{-\Gamma t}$", color=ORANGE, transform=ax.transAxes, ha="right", fontsize=7)
-ax.text(-0.34, 1.02, "(c)", transform=ax.transAxes, fontweight="bold")
 
 os.makedirs(os.path.join(ROOT, "paper", "figures"), exist_ok=True)
 for ext in ("pdf", "png"):

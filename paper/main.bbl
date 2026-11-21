@@ -1,72 +1,21 @@
-\begin{thebibliography}{22}
+\begin{thebibliography}{7}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[Marchetti et~al.(2013)Marchetti, Joanny, Ramaswamy, Liverpool, Prost, Rao, and Simha]{Marchetti2013}
-M.~C. Marchetti, J.~F. Joanny, S.~Ramaswamy, T.~B. Liverpool, J.~Prost, Madan Rao, and R.~Aditi Simha.
-\newblock Hydrodynamics of soft active matter.
-\newblock \emph{Rev. Mod. Phys.}, 85:\penalty0 1143, 2013.
-\newblock \doi{10.1103/RevModPhys.85.1143}.
+\bibitem[Barona~Balda et~al.(2024)Barona~Balda, Argun, Callegari, and Volpe]{Balda2022}
+Angelo Barona~Balda, Aykut Argun, Agnese Callegari, and Giovanni Volpe.
+\newblock Playing with active matter.
+\newblock \emph{American Journal of Physics}, 92\penalty0 (11):\penalty0 847--858, 2024.
+\newblock \doi{10.1119/5.0125111}.
 
-\bibitem[Bechinger et~al.(2016)Bechinger, Di~Leonardo, L{\"o}wen, Reichhardt, Volpe, and Volpe]{Bechinger2016}
-Clemens Bechinger, Roberto Di~Leonardo, Hartmut L{\"o}wen, Charles Reichhardt, Giorgio Volpe, and Giovanni Volpe.
-\newblock Active particles in complex and crowded environments.
-\newblock \emph{Rev. Mod. Phys.}, 88:\penalty0 045006, 2016.
-\newblock \doi{10.1103/RevModPhys.88.045006}.
-
-\bibitem[Vicsek and Zafeiris(2012)]{VicsekZafeiris2012}
-Tam{\'a}s Vicsek and Anna Zafeiris.
-\newblock Collective motion.
-\newblock \emph{Phys. Rep.}, 517:\penalty0 71, 2012.
-\newblock \doi{10.1016/j.physrep.2012.03.004}.
-
-\bibitem[Vicsek et~al.(1995)Vicsek, Czir{\'o}k, Ben-Jacob, Cohen, and Shochet]{Vicsek1995}
-Tam{\'a}s Vicsek, Andr{\'a}s Czir{\'o}k, Eshel Ben-Jacob, Inon Cohen, and Ofer Shochet.
-\newblock Novel type of phase transition in a system of self-driven particles.
-\newblock \emph{Phys. Rev. Lett.}, 75:\penalty0 1226, 1995.
-
-\bibitem[Toner and Tu(1995)]{TonerTu1995}
-John Toner and Yuhai Tu.
-\newblock Long-range order in a two-dimensional dynamical {XY} model: How birds fly together.
-\newblock \emph{Phys. Rev. Lett.}, 75:\penalty0 4326, 1995.
-\newblock \doi{10.1103/PhysRevLett.75.4326}.
-
-\bibitem[Narayan et~al.(2007)Narayan, Ramaswamy, and Menon]{Narayan2007}
-Vijay Narayan, Sriram Ramaswamy, and Narayanan Menon.
-\newblock Long-lived giant number fluctuations in a swarming granular nematic.
-\newblock \emph{Science}, 317:\penalty0 105, 2007.
-\newblock \doi{10.1126/science.1140414}.
-
-\bibitem[Deseigne et~al.(2010)Deseigne, Dauchot, and Chat{\'e}]{Deseigne2010}
-Julien Deseigne, Olivier Dauchot, and Hugues Chat{\'e}.
-\newblock Collective motion of vibrated polar disks.
-\newblock \emph{Phys. Rev. Lett.}, 105:\penalty0 098001, 2010.
-
-\bibitem[Buttinoni et~al.(2013)Buttinoni, Bial{\'k}e, K{\"u}mmel, L{\"o}wen, Bechinger, and Speck]{Buttinoni2013}
-Ivo Buttinoni, Julian Bial{\'k}e, Felix K{\"u}mmel, Hartmut L{\"o}wen, Clemens Bechinger, and Thomas Speck.
-\newblock Dynamical clustering and phase separation in suspensions of self-propelled colloidal particles.
-\newblock \emph{Phys. Rev. Lett.}, 110:\penalty0 238301, 2013.
-\newblock \doi{10.1103/PhysRevLett.110.238301}.
-
-\bibitem[Cates and Tailleur(2015)]{CatesTailleur2015}
-Michael~E. Cates and Julien Tailleur.
-\newblock Motility-induced phase separation.
-\newblock \emph{Annu. Rev. Condens. Matter Phys.}, 6:\penalty0 219, 2015.
-\newblock \doi{10.1146/annurev-conmatphys-031214-014710}.
-
-\bibitem[Galajda et~al.(2007)Galajda, Keymer, Chaikin, and Austin]{Galajda2007}
-Peter Galajda, Juan Keymer, Paul Chaikin, and Robert Austin.
-\newblock A wall of funnels concentrates swimming bacteria.
-\newblock \emph{J. Bacteriol.}, 189:\penalty0 8704, 2007.
-\newblock \doi{10.1128/JB.01033-07}.
-
-\bibitem[Wan et~al.(2008)Wan, Olson~Reichhardt, Nussinov, and Reichhardt]{Wan2008}
-M.~B. Wan, C.~J. Olson~Reichhardt, Z.~Nussinov, and C.~Reichhardt.
-\newblock Rectification of swimming bacteria and self-driven particle systems by arrays of asymmetric barriers.
-\newblock \emph{Phys. Rev. Lett.}, 101:\penalty0 018102, 2008.
+\bibitem[Kiechl et~al.(2026)Kiechl, Altshuler, L{\"u}ders, Roichman, and Franosch]{Kiechl2026}
+Thomas Kiechl, Amy Altshuler, Anton L{\"u}ders, Yael Roichman, and Thomas Franosch.
+\newblock Free chiral self-propelled robots compared to active {B}rownian circle swimmers.
+\newblock \emph{Phys. Rev. E}, 113:\penalty0 045409, 2026.
+\newblock \doi{10.1103/274x-4vgn}.
 
 \bibitem[Angelani et~al.(2009)Angelani, Di~Leonardo, and Ruocco]{Angelani2009}
 L.~Angelani, R.~Di~Leonardo, and G.~Ruocco.
@@ -80,53 +29,22 @@ R.~Di~Leonardo, L.~Angelani, D.~Dell'Arciprete, G.~Ruocco, V.~Iebba, S.~Schippa,
 \newblock \emph{Proc. Natl. Acad. Sci. USA}, 107:\penalty0 9541, 2010.
 \newblock \doi{10.1073/pnas.0910426107}.
 
-\bibitem[Sokolov et~al.(2010)Sokolov, Apodaca, Grzybowski, and Aranson]{Sokolov2010}
-Andrey Sokolov, Mario~M. Apodaca, Bartosz~A. Grzybowski, and Igor~S. Aranson.
-\newblock Swimming bacteria power microscopic gears.
-\newblock \emph{Proc. Natl. Acad. Sci. USA}, 107:\penalty0 969, 2010.
+\bibitem[Mallory et~al.(2014)Mallory, Valeriani, and Cacciuto]{Mallory2014}
+S.~A. Mallory, C.~Valeriani, and A.~Cacciuto.
+\newblock Curvature-induced activation of a passive tracer in an active bath.
+\newblock \emph{Physical Review E}, 90:\penalty0 032309, 2014.
+\newblock \doi{10.1103/PhysRevE.90.032309}.
 
-\bibitem[Howse et~al.(2007)Howse, Jones, Ryan, Gough, Vafabakhsh, and Golestanian]{Howse2007}
-Jonathan~R. Howse, Richard A.~L. Jones, Anthony~J. Ryan, Tim Gough, Reza Vafabakhsh, and Ramin Golestanian.
-\newblock Self-motile colloidal particles: From directed propulsion to random walk.
-\newblock \emph{Phys. Rev. Lett.}, 99:\penalty0 048102, 2007.
+\bibitem[Wu and Libchaber(2000)]{WuLibchaber2000}
+Xiao-Lun Wu and Albert Libchaber.
+\newblock Particle diffusion in a quasi-two-dimensional bacterial bath.
+\newblock \emph{Phys. Rev. Lett.}, 84:\penalty0 3017, 2000.
+\newblock \doi{10.1103/PhysRevLett.84.3017}.
 
-\bibitem[ten Hagen et~al.(2011)ten Hagen, van Teeffelen, and L{\"o}wen]{tenHagen2011}
-B.~ten Hagen, S.~van Teeffelen, and H.~L{\"o}wen.
-\newblock Brownian motion of a self-propelled particle.
-\newblock \emph{J. Phys.: Condens. Matter}, 23:\penalty0 194119, 2011.
-
-\bibitem[K{\"u}mmel et~al.(2013)K{\"u}mmel, ten Hagen, Wittkowski, Buttinoni, Eichhorn, Volpe, L{\"o}wen, and Bechinger]{Kummel2013}
-Felix K{\"u}mmel, Borge ten Hagen, Raphael Wittkowski, Ivo Buttinoni, Ralf Eichhorn, Giovanni Volpe, Hartmut L{\"o}wen, and Clemens Bechinger.
-\newblock Circular motion of asymmetric self-propelling particles.
-\newblock \emph{Phys. Rev. Lett.}, 110:\penalty0 198302, 2013.
-\newblock \doi{10.1103/PhysRevLett.110.198302}.
-
-\bibitem[Barona~Balda et~al.(2022)Barona~Balda, Argun, Callegari, and Volpe]{Balda2022}
-Angelo Barona~Balda, Aykut Argun, Agnese Callegari, and Giovanni Volpe.
-\newblock Playing with active matter, 2022.
-
-\bibitem[Scholz et~al.(2018)Scholz, Jahanshahi, Ldov, and L{\"o}wen]{Scholz2018}
-Christian Scholz, Soudeh Jahanshahi, Anton Ldov, and Hartmut L{\"o}wen.
-\newblock Inertial delay of self-propelled particles.
-\newblock \emph{Nat. Commun.}, 9:\penalty0 5156, 2018.
-\newblock \doi{10.1038/s41467-018-07596-x}.
-
-\bibitem[Dauchot and D{\'e}mery(2019)]{Dauchot2019}
-Olivier Dauchot and Vincent D{\'e}mery.
-\newblock Dynamics of a self-propelled particle in a harmonic trap.
-\newblock \emph{Phys. Rev. Lett.}, 122:\penalty0 068002, 2019.
-\newblock \doi{10.1103/PhysRevLett.122.068002}.
-
-\bibitem[Baconnier et~al.(2022)Baconnier, Shohat, Hern{\'a}ndez~L{\'o}pez, Coulais, D{\'e}mery, D{\"u}ring, and Dauchot]{Baconnier2022}
-P.~Baconnier, D.~Shohat, C.~Hern{\'a}ndez~L{\'o}pez, C.~Coulais, V.~D{\'e}mery, G.~D{\"u}ring, and O.~Dauchot.
-\newblock Selective and collective actuation in active solids.
-\newblock \emph{Nat. Phys.}, 18:\penalty0 1234, 2022.
-\newblock \doi{10.1038/s41567-022-01704-x}.
-
-\bibitem[Granek et~al.(2022)Granek, Kafri, and Tailleur]{Granek2022}
-Omer Granek, Yariv Kafri, and Julien Tailleur.
-\newblock Anomalous transport of tracers in active baths.
-\newblock \emph{Phys. Rev. Lett.}, 129:\penalty0 038001, 2022.
-\newblock \doi{10.1103/PhysRevLett.129.038001}.
+\bibitem[Bechinger et~al.(2016)Bechinger, Di~Leonardo, L{\"o}wen, Reichhardt, Volpe, and Volpe]{Bechinger2016}
+Clemens Bechinger, Roberto Di~Leonardo, Hartmut L{\"o}wen, Charles Reichhardt, Giorgio Volpe, and Giovanni Volpe.
+\newblock Active particles in complex and crowded environments.
+\newblock \emph{Rev. Mod. Phys.}, 88:\penalty0 045006, 2016.
+\newblock \doi{10.1103/RevModPhys.88.045006}.
 
 \end{thebibliography}

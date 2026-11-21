@@ -8,7 +8,7 @@ import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 name = sys.argv[1]
-nb = json.load(open(os.path.join(ROOT, "stage1_unified_v2.ipynb")))
+nb = json.load(open(os.path.join(ROOT, "stage1_code", "stage1_unified_v2.ipynb")))
 code = lambda i: "\n".join(l for l in "".join(nb["cells"][i]["source"]).splitlines() if not l.lstrip().startswith("%"))
 ns = {"__name__": "nb"}
 import matplotlib; matplotlib.use("Agg")
